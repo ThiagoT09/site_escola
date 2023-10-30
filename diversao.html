@@ -1,0 +1,43 @@
+# Função para imprimir o tabuleiro
+def imprimir_tabuleiro(tabuleiro):
+    for linha in tabuleiro:
+        print(" | ".join(linha))
+        print("-" * 9)
+
+# Função para verificar se alguém venceu
+def verificar_vitoria(tabuleiro, jogador):
+    # Verificar linhas, colunas e diagonais
+    for i in range(3):
+        if all(tabuleiro[i][j] == jogador for j in range(3)) or all(tabuleiro[j][i] == jogador for j in range(3)):
+            return True
+    if (tabuleiro[0][0] == tabuleiro[1][1] == tabuleiro[2][2] == jogador) or (tabuleiro[0][2] == tabuleiro[1][1] == tabuleiro[2][0] == jogador):
+        return True
+    return False
+
+# Função principal do jogo
+def jogo_da_velha():
+    tabuleiro = [[" " for _ in range(3)] for _ in range(3)]
+    jogador_atual = "X"
+    jogadas = 0
+
+    while True:
+        imprimir_tabuleiro(tabuleiro)
+        linha = int(input(f"Jogador {jogador_atual}, escolha uma linha (0, 1, 2): "))
+        coluna = int(input(f"Jogador {jogador_atual}, escolha uma coluna (0, 1, 2): "))
+
+        if tabuleiro[linha][coluna] == " ":
+            tabuleiro[linha][coluna] = jogador_atual
+            jogadas += 1
+            if verificar_vitoria(tabuleiro, jogador_atual):
+                imprimir_tabuleiro(tabuleiro)
+                print(f"Jogador {jogador_atual} venceu!")
+                break
+            elif jogadas == 9:
+                imprimir_tabuleiro(tabuleiro)
+                print("Empate!")
+                break
+            jogador_atual = "O" if jogador_atual == "X" else "X"
+        else:
+            print("Essa posição já foi escolhida. Tente novamente.")
+
+jogo_da_velha()
